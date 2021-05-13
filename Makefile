@@ -1,6 +1,6 @@
 CC := gcc
 
-CFLAGS := -Werror -Wall
+CFLAGS := -Werror -Wall -Wswitch-enum
 
 cfiles  := $(wildcard src/*.c)
 cfiles  := $(filter-out src/frusch.c, $(cfiles))
