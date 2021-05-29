@@ -14,19 +14,19 @@ Vm vm_new(u32 *program, u32 program_size) {
 }
 
 s32 vm_execute(Vm *vm) {
-    CHECK_PROG_BOUNDS();
+	CHECK_PROG_BOUNDS();
 	switch (vm->program[vm->ip++]) {
 	case OP_NOP:
 		break;
 	case OP_HALT:
 		vm->halt = 1;
 		break;
-    case OP_PUSH:
-        CHECK_PROG_BOUNDS();
-        u32 n = READ_BYTE();
-        CHECK_STACK_BOUNDS();
-        vm->stack[vm->sp++] = n;
-        break;
+	case OP_PUSH:
+		CHECK_PROG_BOUNDS();
+		u32 n = READ_BYTE();
+		CHECK_STACK_BOUNDS();
+		vm->stack[vm->sp++] = n;
+		break;
 	}
 	return STATUS_OK;
 }

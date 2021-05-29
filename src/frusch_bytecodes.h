@@ -4,13 +4,13 @@
 typedef enum Statuscode {
 	STATUS_OK = 0,
 	ERR_BOUNDS = -1,
-    ERR_OVERFLOW = -2,
+	ERR_OVERFLOW = -2,
 } Statuscode;
 
 typedef enum Bytecode {
 	OP_NOP = 0,
 	OP_HALT,
-    OP_PUSH,
+	OP_PUSH,
 } Bytecode;
 
 #endif /* FRUSCH_BYTECODES_H */
