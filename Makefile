@@ -15,8 +15,11 @@ bin/fvm: $(objects)
 	$(CC) -c src/fvm.c -o bin/fvm.o $(CFLAGS)
 	$(CC) -o bin/fvm bin/fvm.o $(objects) $(CFLAGS)
 
-$(objects):
+$(objects): bin
 	$(CC) -c $(@:bin/%.o=src/%.c) -o $@ $(CFLAGS)
+
+bin:
+	mkdir bin
 
 clean:
 	rm bin/*
