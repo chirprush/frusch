@@ -1,0 +1,18 @@
+// Expression syntax (e_)
+e_paren ::= "(" e_level0 ")"
+e_param_list ::= e_level0 ("," e_level0)* | ""
+e_fcall ::= "(" e_param_list ")"
+e_lvalue ::= IDENT ("." IDENT)*
+e_level2 ::= NUMBER | (e_lvalue | e_paren) e_fcall*
+e_level1 ::= e_level2 (("*" | "/") e_level2)*
+e_level0 ::= e_level1 (("+" | "-") e_level1)*
+
+// Type syntax (t_)
+t_typename ::= ("*")* IDENT
+t_func_param_list ::= IDENT t_typename ("," IDENT t_typename)* | ""
+
+// Statement syntax (s_)
+s_import ::= "import" ("pkg" | IDENT) ("." IDENT)* ("as" IDENT)?
+s_declfn ::= "func" ("(" IDENT t_typename ")")? "(" t_func_param_list ")"
+s_let ::= "let" IDENT t_typename ("=" e_level0)?
+s_assign ::= e_lvalue "=" e_level0
