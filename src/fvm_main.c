@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "frusch_bytecodes.h"
-#include "frusch_vm.h"
-#include "frusch_int.h"
+#include "fvm_bytecodes.h"
+#include "fvm_vm.h"
+#include "fvm_int.h"
 
 int main(int argc, char *argv[]) {
 	u32 program[] = {

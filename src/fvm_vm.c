@@ -1,6 +1,6 @@
-#include "frusch_bytecodes.h"
-#include "frusch_vm.h"
-#include "frusch_int.h"
+#include "fvm_bytecodes.h"
+#include "fvm_vm.h"
+#include "fvm_int.h"
 
 #define CHECK_PROG_BOUNDS() if (vm->ip >= vm->program_size) { return ERR_BOUNDS; }
 #define CHECK_STACK_BOUNDS() if (vm->sp >= STACK_SIZE) { return ERR_OVERFLOW; }

@@ -2,26 +2,30 @@ CC := gcc
 
 CFLAGS := -Werror -Wall -Wswitch-enum
 
-cfiles  := $(wildcard src/*.c)
-cfiles  := $(filter-out src/frusch.c, $(cfiles))
-cfiles  := $(filter-out src/fvm.c, $(cfiles))
-objects := $(cfiles:src/%.c=bin/%.o)
+frusch_cfiles  := $(wildcard src/frusch_*.c)
+fvm_cfiles  := $(wildcard src/fvm_*.c)
+frusch_objects := $(frusch_cfiles:src/%.c=bin/%.o)
+fvm_objects := $(fvm_cfiles:src/%.c=bin/%.o)
 
-bin/frusch: $(objects)
-	$(CC) -c src/frusch.c -o bin/frusch.o $(CFLAGS)
-	$(CC) -o bin/frusch bin/frusch.o $(objects) $(CFLAGS)
+frusch: bin/frusch
+fvm: bin/fvm
 
-bin/fvm: $(objects)
-	$(CC) -c src/fvm.c -o bin/fvm.o $(CFLAGS)
-	$(CC) -o bin/fvm bin/fvm.o $(objects) $(CFLAGS)
+bin/frusch: $(frusch_objects) $(fvm_objects)
+	$(CC) -o bin/frusch $(frusch_objects) $(fvm_objects) $(CFLAGS)
 
-$(objects): bin
+bin/fvm: $(fvm_objects)
+	$(CC) -o bin/fvm $(fvm_objects) $(CFLAGS)
+
+$(frusch_objects): bin
+	$(CC) -c $(@:bin/%.o=src/%.c) -o $@ $(CFLAGS)
+
+$(fvm_objects): bin
 	$(CC) -c $(@:bin/%.o=src/%.c) -o $@ $(CFLAGS)
 
 bin:
-	mkdir bin
+	mkdir -p bin
 
 clean:
 	rm bin/*
 
-.PHONY: clean
+.PHONY: frusch fvm clean

@@ -1,7 +1,7 @@
 #ifndef FRUSCH_VM_H
 #define FRUSCH_VM_H
 
-#include "frusch_int.h"
+#include "fvm_int.h"
 
 // TODO: Adapt stack to be dynamically allocated
 #define STACK_SIZE 64
