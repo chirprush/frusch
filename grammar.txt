@@ -3,16 +3,37 @@ e_paren ::= "(" e_level0 ")"
 e_param_list ::= e_level0 ("," e_level0)* | ""
 e_fcall ::= "(" e_param_list ")"
 e_lvalue ::= IDENT ("." IDENT)*
-e_level2 ::= NUMBER | (e_lvalue | e_paren) e_fcall*
-e_level1 ::= e_level2 (("*" | "/") e_level2)*
-e_level0 ::= e_level1 (("+" | "-") e_level1)*
+e_level6 ::= (NUMBER | STRING | e_lvalue | e_paren) e_fcall*
+e_level5 ::= e_level6 ("--" | "++")*
+e_level4 ::= ("--" | "++")* e_level5
+e_level3 ::= ("*" | "&")* e_level4
+e_level2 ::= e_level3 (("*" | "/" | "%") e_level3)*
+e_level1 ::= e_level2 (("+" | "-") e_level2)*
+e_level0 ::= e_level1 ("=" e_level1)*
 
 // Type syntax (t_)
-t_typename ::= ("*")* IDENT
-t_func_param_list ::= IDENT t_typename ("," IDENT t_typename)* | ""
+
+// Ex.
+//   **path
+//   str
+t_type ::= ("*")* IDENT
+
+t_func_param_list ::= IDENT t_type ("," IDENT t_type)* | ""
 
 // Statement syntax (s_)
-s_import ::= "import" ("pkg" | IDENT) ("." IDENT)* ("as" IDENT)?
-s_declfn ::= "func" ("(" IDENT t_typename ")")? "(" t_func_param_list ")"
-s_let ::= "let" IDENT t_typename ("=" e_level0)?
-s_assign ::= e_lvalue "=" e_level0
+
+// Ex.
+//   import src.test.test_add
+//   import test.test_add as add
+s_import ::= "import" ("src" | IDENT) ("." IDENT)* ("as" IDENT)?
+
+// Ex.
+//   func join(sep str, num int)
+//   func join() str
+//   func jd_path.join(sep str) str
+s_declfn ::= "func" (IDENT ".")? IDENT "(" t_func_param_list ")" t_type?
+
+// Ex.
+//   let a int = 3
+//   let b *jd_path = jd_path.new()
+s_let ::= "let" IDENT t_type ("=" e_level0)?
