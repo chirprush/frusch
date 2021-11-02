@@ -1,16 +1,18 @@
 #include <stdio.h>
-#include "fvm_bytecodes.h"
-#include "fvm_vm.h"
 #include "fvm_int.h"
+#include "fvm_machine.h"
+#include "fvm_bytecode.h"
+#include "fvm_status.h"
 
 int main(int argc, char *argv[]) {
-	u32 program[] = {
-		OP_PUSH, 3,
-		OP_HALT,
+	const u8 instructions[] = {
+		FVMI_PUSH8, 2,
+		FVMI_PUSH8, 3,
+		FVMI_HALT
 	};
-	u32 program_size = sizeof(program) / sizeof(u32);
-	Vm vm = vm_new(program, program_size);
-	s32 result = vm_execute(&vm);
-	printf("%d\n", result);
+	fvm_machine *vm = fvm_machine_new(instructions, sizeof(instructions) / sizeof(u8));
+	fvm_status status = fvm_machine_execute(vm);
+	printf("%d\n", status);
+	printf("%d\n", *vm->stack);
 	return 0;
 }

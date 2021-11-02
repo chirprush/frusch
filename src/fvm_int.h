@@ -1,9 +1,9 @@
-#ifndef FRUSCH_INT_H
-#define FRUSCH_INT_H
+#ifndef FVM_INT_H
+#define FVM_INT_H
 
-#define u8 unsigned char
-#define u32 unsigned int
+#include <stdint.h>
 
-#define s32 signed int
+typedef uint8_t u8;
+typedef uint32_t u32;
 
-#endif /* FRUSCH_INT_H */
+#endif // FVM_INT_H
