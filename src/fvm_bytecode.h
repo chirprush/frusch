@@ -1,7 +1,7 @@
 #ifndef FVM_BYTECODE_H
 #define FVM_BYTECODE_H
 
-#include "fvm_int.h"
+#include <stdint.h>
 
 typedef enum fvm_bytecode {
 	FVMI_NOP,
@@ -9,6 +9,6 @@ typedef enum fvm_bytecode {
 	FVMI_HALT
 } fvm_bytecode;
 
-u32 fvm_bytecode_arity(fvm_bytecode op);
+uint32_t fvm_bytecode_arity(fvm_bytecode op);
 
 #endif // FVM_BYTECODE_H

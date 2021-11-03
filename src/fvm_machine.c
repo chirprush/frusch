@@ -1,10 +1,10 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include "fvm_machine.h"
 #include "fvm_bytecode.h"
 #include "fvm_status.h"
-#include "fvm_int.h"
 
-fvm_machine *fvm_machine_new(const u8 *instructions, u32 inst_length) {
+fvm_machine *fvm_machine_new(const uint8_t *instructions, uint32_t inst_length) {
 	fvm_machine *vm = malloc(sizeof(fvm_machine));
 	vm->sp = vm->stack;
 	vm->instructions = instructions;
@@ -14,7 +14,7 @@ fvm_machine *fvm_machine_new(const u8 *instructions, u32 inst_length) {
 	return vm;
 }
 
-fvm_status fvm_machine_push(fvm_machine *vm, u8 byte) {
+fvm_status fvm_machine_push(fvm_machine *vm, uint8_t byte) {
 	if (vm->sp - vm->stack >= STACK_SIZE) {
 		return FVMS_SO;
 	}
@@ -29,7 +29,7 @@ fvm_status fvm_machine_do_op(fvm_machine *vm) {
 		return FVMS_IOB;
 	}
 	fvm_bytecode op = (fvm_bytecode)(*vm->ip);
-	u32 arity = fvm_bytecode_arity(op);
+	uint32_t arity = fvm_bytecode_arity(op);
 	if (vm->ip - vm->instructions + arity >= vm->inst_length) {
 		return FVMS_IOB;
 	}
