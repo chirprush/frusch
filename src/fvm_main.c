@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "fvm_machine.h"
-#include "fvm_bytecode.h"
-#include "fvm_status.h"
+#include <fvm/fvm_machine.h>
+#include <fvm/fvm_bytecode.h>
+#include <fvm/fvm_status.h>
 
 int main(int argc, char *argv[]) {
 	const uint8_t instructions[] = {
