@@ -12,7 +12,7 @@ use std::print
 
 enum Result[A, B] {
 	Ok(A)
-	Err(b)
+	Err(B)
 }
 
 struct Buffer[T] {
