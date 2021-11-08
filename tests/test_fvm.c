@@ -20,10 +20,13 @@ int main(int argc, char *argv[]) {
 	test_context context = {0};
 	context.entries = entries;
 	context.length = length;
-	test_context_start(&context, 0);
+	test_context_start(&context);
 	for (size_t i = 0; i < length; ++i) {
 		test_context_run(&context, i);
 	}
 	test_context_end(&context);
-	return 0;
+	if (context.failed) {
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }
