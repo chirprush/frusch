@@ -13,6 +13,12 @@ bin/frusch: bin/libfrusch.a
 bin/fvm: bin/libfvm.a
 	$(CC) -o bin/fvm src/fvm_main.c -Lbin -lfvm -Iinclude $(CFLAGS)
 
+bin/test_frusch: bin/libfrusch.a
+	$(CC) -o bin/test_frusch tests/test_frusch.c -Lbin  -lfrusch -Iinclude $(CFLAGS)
+
+bin/test_fvm: bin/libfvm.a
+	$(CC) -o bin/test_fvm tests/test_fvm.c -Lbin  -lfvm -Iinclude $(CFLAGS)
+
 bin/libfrusch.a: $(frusch_objects) $(fvm_objects)
 	ar rcs bin/libfrusch.a $(frusch_objects) $(fvm_objects)
 
@@ -31,4 +37,4 @@ bin:
 clean:
 	rm bin/*
 
-.PHONY: clean
+.PHONY: tests clean
