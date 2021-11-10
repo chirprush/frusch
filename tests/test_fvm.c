@@ -1,20 +1,64 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <fvm/fvm_status.h>
+#include <fvm/fvm_machine.h>
 
 #include "test_util.h"
 
-test_result test_addition() {
-	return tassert_eq(1 + 1, 2);
+test_result test_iob() {
+	const uint8_t instructions[] = {
+		FVMI_PUSH8,
+	};
+	fvm_machine *vm = fvm_machine_new(instructions, sizeof(instructions) / sizeof(instructions[0]));
+	fvm_status status = fvm_machine_execute(vm);
+	test_result result = tassert_eq(status, FVMS_IOB);
+	fvm_machine_free(vm);
+	return result;
 }
 
-test_result test_subtraction() {
-	return tassert_eq(1 - 1, 0);
+test_result test_su() {
+	const uint8_t instructions[] = {
+		FVMI_PUSH8, 3,
+		FVMI_ADD8,
+		FVMI_HALT,
+	};
+	fvm_machine *vm = fvm_machine_new(instructions, sizeof(instructions) / sizeof(instructions[0]));
+	fvm_status status = fvm_machine_execute(vm);
+	test_result result = tassert_eq(status, FVMS_SU);
+	fvm_machine_free(vm);
+	return result;
+}
+
+test_result test_op() {
+	const uint8_t instructions[] = {
+		FVMI_PUSH8, 3,
+		FVMI_PUSH8, 5,
+		FVMI_ADD8,
+		FVMI_PUSH8, 2,
+		FVMI_PUSH8, 5,
+		FVMI_POP8,
+		FVMI_DIV8,
+		FVMI_PUSH8, 27,
+		FVMI_MUL8,
+		FVMI_PUSH8, 2,
+		FVMI_SUB8,
+		FVMI_PUSH8, 5,
+		FVMI_MOD8,
+		FVMI_HALT,
+	};
+	fvm_machine *vm = fvm_machine_new(instructions, sizeof(instructions) / sizeof(instructions[0]));
+	fvm_machine_execute(vm);
+	test_result result = tassert_eq(*(vm->sp - 1), 1);
+	fvm_machine_free(vm);
+	return result;
 }
 
 int main(int argc, char *argv[]) {
 	struct test_entry entries[] = {
-		test_entry(test_addition),
-		test_entry(test_subtraction)
+		test_entry(test_iob),
+		test_entry(test_su),
+		test_entry(test_op)
 	};
 	size_t length = sizeof(entries) / sizeof(entries[0]);
 	test_context context = {0};

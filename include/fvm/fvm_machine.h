@@ -19,8 +19,10 @@ typedef struct fvm_machine {
 } fvm_machine;
 
 fvm_machine *fvm_machine_new(const uint8_t *instructions, uint32_t inst_length);
+void fvm_machine_free(fvm_machine *vm);
 
 fvm_status fvm_machine_push(fvm_machine *vm, uint8_t byte);
+uint8_t fvm_machine_pop(fvm_machine *vm);
 
 fvm_status fvm_machine_do_op(fvm_machine *vm);
 fvm_status fvm_machine_execute(fvm_machine *vm);
