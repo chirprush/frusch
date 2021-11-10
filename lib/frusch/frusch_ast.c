@@ -2,7 +2,7 @@
 
 #include "frusch_ast.h"
 
-frusch_node_bin_expr *frusch_node_bin_expr_new(frusch_node *left, frusch_node *right, char *op) {
+frusch_node_bin_expr *frusch_node_bin_expr_new(frusch_node *left, frusch_node *right, frusch_node_op op) {
 	frusch_node_bin_expr *expr = malloc(sizeof(frusch_node_bin_expr));
 	expr->left = left;
 	expr->right = right;
@@ -13,21 +13,36 @@ frusch_node_bin_expr *frusch_node_bin_expr_new(frusch_node *left, frusch_node *r
 void frusch_node_bin_expr_free(frusch_node_bin_expr *expr) {
 	frusch_node_free(expr->left);
 	frusch_node_free(expr->right);
-	free(expr->op);
 	free(expr);
 }
 
-frusch_node_call_expr *frusch_node_call_expr_new(frusch_node *func, frusch_node *args, uint8_t args_length) {
+frusch_node_list *frusch_node_list_new() {
+	frusch_node_list *list = malloc(sizeof(frusch_node_list));
+	list->nodes = NULL;
+	list->length = 0;
+	list->capacity = 0;
+	return list;
+}
+
+void frusch_node_list_free(frusch_node_list *list) {
+	if (list->nodes != NULL) {
+		free(list->nodes);
+	}
+	free(list);
+}
+
+frusch_node_call_expr *frusch_node_call_expr_new(frusch_node *func, frusch_node_list *args) {
 	frusch_node_call_expr *call = malloc(sizeof(frusch_node_call_expr));
 	call->func = func;
 	call->args = args;
-	call->args_length = args_length;
 	return call;
 }
 
 void frusch_node_call_expr_free(frusch_node_call_expr *call) {
 	frusch_node_free(call->func);
-	frusch_node_free(call->args);
+	if (call->args != NULL || call->args->length == 0) {
+		frusch_node_list_free(call->args);
+	}
 	free(call);
 }
 

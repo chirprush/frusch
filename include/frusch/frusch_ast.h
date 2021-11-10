@@ -12,22 +12,38 @@ typedef enum frusch_node_type {
 	NODE_CALL
 } frusch_node_type;
 
+typedef enum frusch_node_op {
+	OP_ADD,
+	OP_SUB,
+	OP_MUL,
+	OP_DIV,
+	OP_MOD
+} frusch_node_op;
+
 typedef struct frusch_node_bin_expr {
 	struct frusch_node *left;
 	struct frusch_node *right;
-	char *op;
+	frusch_node_op op;
 } frusch_node_bin_expr;
 
-frusch_node_bin_expr *frusch_node_bin_expr_new(struct frusch_node *left, struct frusch_node *right, char *op);
+frusch_node_bin_expr *frusch_node_bin_expr_new(struct frusch_node *left, struct frusch_node *right, frusch_node_op op);
 void frusch_node_bin_expr_free(frusch_node_bin_expr *expr);
+
+typedef struct frusch_node_list {
+	struct frusch_node *nodes;
+	size_t length;
+	size_t capacity;
+} frusch_node_list;
+
+frusch_node_list *frusch_node_list_new();
+void frusch_node_list_free(frusch_node_list *list);
 
 typedef struct frusch_node_call_expr {
 	struct frusch_node *func;
-	struct frusch_node *args;
-	uint8_t args_length;
+	frusch_node_list *args;
 } frusch_node_call_expr;
 
-frusch_node_call_expr *frusch_node_call_expr_new(struct frusch_node *func, struct frusch_node *args, uint8_t args_length);
+frusch_node_call_expr *frusch_node_call_expr_new(struct frusch_node *func, frusch_node_list *args);
 void frusch_node_call_expr_free(frusch_node_call_expr *call);
 
 typedef struct frusch_node {

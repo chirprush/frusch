@@ -4,11 +4,11 @@
 #include "test_util.h"
 
 test_result test_addition() {
-	tassert_eq(1 + 1, 2);
+	return tassert_eq(1 + 1, 2);
 }
 
 test_result test_subtraction() {
-	tassert_eq(1 - 1, 0);
+	return tassert_eq(1 - 1, 0);
 }
 
 int main(int argc, char *argv[]) {

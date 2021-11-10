@@ -15,20 +15,20 @@ typedef enum test_result_type {
 
 typedef struct test_result {
 	test_result_type type;
-	int left;
-	int right;
+	uint64_t left;
+	uint64_t right;
 	const char *expr_left;
 	const char *expr_right;
 	size_t line;
 	const char *file;
 } test_result;
 
-#define tassert(expr) return (test_result) { .type = TEST_TRUE, .left = (expr), .right = 0, .expr_left = #expr, .expr_right = NULL, .line =  __LINE__, .file = __FILE__ };
-#define tnassert(expr) return (test_result) { .type = TEST_FALSE, .left = (expr), .right = 0, .expr_left = #expr, .expr_right = NULL, .line =  __LINE__, .file = __FILE__ };
-#define tassert_eq(_left, _right) return (test_result) { .type = TEST_EQ, .left = (_left), .right = (_right), .expr_left = #_left, .expr_right = #_right, .line = __LINE__, .file = __FILE__ };
-#define tassert_ne(_left, _right) return (test_result) { .type = TEST_NE, .left = (_left), .right = (_right), .expr_left = #_left, .expr_right = #_right, .line = __LINE__, .file = __FILE__ };
-#define tfail() return (test_result) { .type = TEST_FAIL, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
-#define tpass() return (test_result) { .type = TEST_PASS, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
+#define tassert(expr) (test_result) { .type = TEST_TRUE, .left = (uint64_t)(expr), .right = 0, .expr_left = #expr, .expr_right = NULL, .line =  __LINE__, .file = __FILE__ };
+#define tnassert(expr) (test_result) { .type = TEST_FALSE, .left = (uint64_t)(expr), .right = 0, .expr_left = #expr, .expr_right = NULL, .line =  __LINE__, .file = __FILE__ };
+#define tassert_eq(_left, _right) (test_result) { .type = TEST_EQ, .left = (uint64_t)(_left), .right = (uint64_t)(_right), .expr_left = #_left, .expr_right = #_right, .line = __LINE__, .file = __FILE__ };
+#define tassert_ne(_left, _right) (test_result) { .type = TEST_NE, .left = (uint64_t)(_left), .right = (uint64_t)(_right), .expr_left = #_left, .expr_right = #_right, .line = __LINE__, .file = __FILE__ };
+#define tfail() (test_result) { .type = TEST_FAIL, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
+#define tpass() (test_result) { .type = TEST_PASS, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
 
 unsigned char test_result_passed(const test_result *result) {
 	switch (result->type) {
@@ -60,10 +60,13 @@ void test_result_print(const test_result *result, unsigned char passed, const ch
 	const char *pass_color = passed ? GREEN : RED;
 	printf("\n %sIn\e[0m %s%s\e[0m:%s%ld\e[0m %s%s\e[0m(): %stest %s\e[0m\n", PURPLE, GREEN, result->file, YELLOW, result->line, BLUE, name, pass_color, pass_message);
 	if (result->type == TEST_TRUE || result->type == TEST_FALSE) {
-		printf("   %sGot\e[0m %s%s\e[0m (%s%d\e[0m)\n", PURPLE, pass_color, result->expr_left, YELLOW, result->left);
-	} else if (result->type == TEST_EQ || result->type == TEST_NE) {
-		printf("   %sGot\e[0m %s%s\e[0m (%s%d\e[0m)\n", PURPLE, pass_color, result->expr_left, YELLOW, result->left);
-		printf("   %sExpected\e[0m %s%s\e[0m (%s%d\e[0m)\n", PURPLE, GREEN, result->expr_right, YELLOW, result->right);
+		printf("   %sGot\e[0m %s%s\e[0m (%s%ld\e[0m)\n", PURPLE, pass_color, result->expr_left, YELLOW, result->left);
+	} else if (result->type == TEST_EQ) {
+		printf("   %sGot\e[0m %s%s\e[0m (%s%ld\e[0m)\n", PURPLE, pass_color, result->expr_left, YELLOW, result->left);
+		printf("   %sExpected\e[0m %s%s\e[0m (%s%ld\e[0m)\n", PURPLE, GREEN, result->expr_right, YELLOW, result->right);
+	} else if (result->type == TEST_NE) {
+		printf("   %sGot\e[0m %s%s\e[0m (%s%ld\e[0m)\n", PURPLE, pass_color, result->expr_left, YELLOW, result->left);
+		printf("   %sExpected not\e[0m %s%s\e[0m (%s%ld\e[0m)\n", PURPLE, GREEN, result->expr_right, YELLOW, result->right);
 	}
 }
 
