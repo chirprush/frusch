@@ -6,11 +6,10 @@
 #include "fvm_bytecode.h"
 #include "fvm_status.h"
 
-// TODO: Make stack dynamically sized
-#define STACK_SIZE 256
-
 typedef struct fvm_machine {
-	uint8_t stack[STACK_SIZE];
+	uint8_t *stack;
+	uint32_t stack_length;
+	uint32_t stack_capacity;
 	uint8_t *sp;
 	const uint8_t *instructions;
 	uint32_t inst_length;

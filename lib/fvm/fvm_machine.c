@@ -4,8 +4,13 @@
 #include "fvm_bytecode.h"
 #include "fvm_status.h"
 
+#define STACK_START_SIZE 0
+
 fvm_machine *fvm_machine_new(const uint8_t *instructions, uint32_t inst_length) {
 	fvm_machine *vm = malloc(sizeof(fvm_machine));
+	vm->stack = malloc(sizeof(uint8_t) * STACK_START_SIZE);
+	vm->stack_length = 0;
+	vm->stack_capacity = STACK_START_SIZE;
 	vm->sp = vm->stack;
 	vm->instructions = instructions;
 	vm->inst_length = inst_length;
@@ -15,14 +20,23 @@ fvm_machine *fvm_machine_new(const uint8_t *instructions, uint32_t inst_length) 
 }
 
 void fvm_machine_free(fvm_machine *vm) {
+	free(vm->stack);
 	free(vm);
 }
 
 fvm_status fvm_machine_push(fvm_machine *vm, uint8_t byte) {
-	if (vm->sp - vm->stack >= STACK_SIZE) {
-		return FVMS_SO;
+	uint32_t size = vm->sp - vm->stack;
+	if (size >= vm->stack_capacity) {
+		uint32_t new_capacity =
+			vm->stack_capacity == 0 ||
+			vm->stack_capacity < STACK_START_SIZE ?
+			1 || STACK_START_SIZE : vm->stack_capacity * 2;
+		vm->stack = realloc(vm->stack, new_capacity);
+		vm->stack_capacity = new_capacity;
+		vm->sp = vm->stack + size;
 	}
 	*(vm->sp++) = byte;
+	++vm->stack_length;
 	return FVMS_OK;
 }
 
