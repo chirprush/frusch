@@ -7,8 +7,8 @@ Frusch is a custom programming language that is heavily based on C-style program
 As stated in the header, frusch's syntax is heavily inspired by Golang.
 
 ```go
-use std::alloc
-use std::print
+use std.alloc.alloc
+use std.io.print
 
 enum Result[A, B] {
 	Ok(ok: A)
