@@ -13,25 +13,38 @@ e_level0 ::= e_level1 ("=" e_level1)*
 
 // Type syntax (t_)
 
+t_generic ::= "[" (IDENT ",") IDENT "]"
+
+t_typename ::= IDENT t_generic?
+
 // Ex.
 //   **path
 //   str
-t_type ::= ("*")* IDENT
+//   *const stat
+t_type ::= ("*")* "const"? t_typename
+
+t_struct_decl ::= "struct" t_typename "{" (IDENT t_type NEWLINE)* "}"
+
+t_enum_opt ::= IDENT "(" (IDENT ":" t_type ",")* IDENT ":" t_type ")" NEWLINE
+t_enum_decl ::= "enum" t_typename "{" t_enum_opt* "}"
+
+t_typedecl ::= t_struct_decl | t_enum_decl
 
 t_func_param_list ::= IDENT t_type ("," IDENT t_type)* | ""
 
 // Statement syntax (s_)
 
 // Ex.
-//   import src.test.test_add
-//   import test.test_add as add
-s_import ::= "import" ("src" | IDENT) ("." IDENT)* ("as" IDENT)?
+//   use src.test.test_add
+//   use test.test_add as add
+//   use std.print as print
+s_use ::= "use" ("std" | "src" | IDENT) ("." IDENT)* ("as" IDENT)?
 
 // Ex.
 //   func join(sep str, num int)
 //   func join() str
-//   func jd_path.join(sep str) str
-s_declfn ::= "func" (IDENT ".")? IDENT "(" t_func_param_list ")" t_type?
+//   func path.join(sep str) str
+s_declfn ::= "func" (IDENT ".")? ("[" (IDENT ",")* IDENT "]")? IDENT "(" t_func_param_list ")" t_type?
 
 // Ex.
 //   let a int = 3
