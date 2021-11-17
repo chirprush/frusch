@@ -25,7 +25,7 @@ t_type ::= ("*")* "const"? t_typename
 
 t_struct_decl ::= "struct" t_typename "{" (IDENT t_type NEWLINE)* "}"
 
-t_enum_opt ::= IDENT "(" (IDENT ":" t_type ",")* IDENT ":" t_type ")" NEWLINE
+t_enum_opt ::= IDENT "(" (IDENT t_type ",")* IDENT t_type ")" NEWLINE
 t_enum_decl ::= "enum" t_typename "{" t_enum_opt* "}"
 
 t_typedecl ::= t_struct_decl | t_enum_decl
