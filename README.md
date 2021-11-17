@@ -20,14 +20,14 @@ struct Buffer[T] {
 	length int
 }
 
-func Buffer[T](slice *const T, length int) {
+func Buffer[T].new(slice *const T, length int) *Buffer[T] {
 	let buf *Buffer[T] = alloc(Buffer[T])
 	buf.slice = slice
 	buf.length = length
 	return buf
 }
 
-func Buffer[T].at(index int) Result[T, ()] {
+func Buffer[T].at(self, index int) Result[T, ()] {
 	if index >= self.length {
 		return Result::Err(())
 	}
@@ -36,7 +36,7 @@ func Buffer[T].at(index int) Result[T, ()] {
 
 func main(argc int, argv *str) int {
 	let arr int[3] = {1, 2, 3}
-	let buf *Buffer[int] = new Buffer[int](arr, 3)
+	let buf *Buffer[int] = Buffer[int].new(arr, 3)
 	let i Result[int, ()] = buf.at(2)
 	if i is Result::Err {
 		print("Index out of bounds")
