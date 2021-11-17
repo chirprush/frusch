@@ -11,8 +11,8 @@ use std.alloc.alloc
 use std.io.print
 
 enum Result[A, B] {
-	Ok(ok: A)
-	Err(err: B)
+	Ok(ok A)
+	Err(err B)
 }
 
 struct Buffer[T] {
@@ -29,16 +29,16 @@ func Buffer[T].new(slice *const T, length int) *Buffer[T] {
 
 func Buffer[T].at(self, index int) Result[T, ()] {
 	if index >= self.length {
-		return Result::Err(())
+		return Result.Err(())
 	}
-	return Result::Ok(slice[index])
+	return Result.Ok(slice[index])
 }
 
 func main(argc int, argv *str) int {
 	let arr int[3] = {1, 2, 3}
 	let buf *Buffer[int] = Buffer[int].new(arr, 3)
 	let i Result[int, ()] = buf.at(2)
-	if i is Result::Err {
+	if i is Result.Err {
 		print("Index out of bounds")
 	} else {
 		print("buf[2] = ", i.ok)
