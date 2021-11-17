@@ -35,10 +35,14 @@ t_func_param_list ::= IDENT t_type ("," IDENT t_type)* | ""
 // Statement syntax (s_)
 
 // Ex.
-//   use src.test.test_add
-//   use test.test_add as add
-//   use std.print as print
-s_use ::= "use" ("std" | "src" | IDENT) ("." IDENT)* ("as" IDENT)?
+//   import src.test.test_add
+//   import test.test_add as add
+s_import ::= "import" ("src" | IDENT) ("." IDENT)* ("as" IDENT)?
+
+// Ex.
+//   use std.print
+//   use std.alloc as malloc
+s_use ::= "import" ("std" | IDENT) ("." IDENT)+ ("as" IDENT)?
 
 // Ex.
 //   func join(sep str, num int)
