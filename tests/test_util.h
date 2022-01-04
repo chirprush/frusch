@@ -1,8 +1,8 @@
-#ifndef TEST_UTIL_H
-#define TEST_UTIL_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef enum test_result_type {
 	TEST_TRUE,
@@ -19,7 +19,7 @@ typedef struct test_result {
 	uint64_t right;
 	const char *expr_left;
 	const char *expr_right;
-	size_t line;
+	uint64_t line;
 	const char *file;
 } test_result;
 
@@ -30,7 +30,7 @@ typedef struct test_result {
 #define tfail() (test_result) { .type = TEST_FAIL, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
 #define tpass() (test_result) { .type = TEST_PASS, .left = 0, .right = 0, .expr_left = NULL, .expr_right = NULL, .line = __LINE__, .file = __FILE__ };
 
-unsigned char test_result_passed(const test_result *result) {
+bool test_result_passed(const test_result *result) {
 	switch (result->type) {
 	case TEST_TRUE:
 		return result->left;
@@ -41,11 +41,11 @@ unsigned char test_result_passed(const test_result *result) {
 	case TEST_NE:
 		return result->left != result->right;
 	case TEST_FAIL:
-		return 0;
+		return false;
 	case TEST_PASS:
-		return 1;
+		return true;
 	default:
-		return 0;
+		return false;
 	}
 }
 
@@ -82,8 +82,8 @@ struct test_entry {
 typedef struct test_context {
 	struct test_entry *entries;
 	size_t length;
-	int passed;
-	int failed;
+	bool passed;
+	bool failed;
 } test_context;
 
 void test_context_start(test_context *context) {
@@ -93,7 +93,7 @@ void test_context_start(test_context *context) {
 void test_context_run(test_context *context, size_t i) {
 	struct test_entry *entry = &context->entries[i];
 	test_result result = entry->func();
-	unsigned char passed = test_result_passed(&result);
+	bool passed = test_result_passed(&result);
 	test_result_print(&result, passed, entry->name);
 	if (passed) {
 		context->passed++;
@@ -105,5 +105,3 @@ void test_context_run(test_context *context, size_t i) {
 void test_context_end(test_context *context) {
 	printf("\n%sResults\e[0m: %s%d passed\e[0m, %s%d failed\e[0m\n", PURPLE, GREEN, context->passed, RED, context->failed);
 }
-
-#endif // TEST_UTIL_H

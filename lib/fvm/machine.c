@@ -25,12 +25,11 @@ void fvm_machine_free(fvm_machine *vm) {
 }
 
 fvm_status fvm_machine_push(fvm_machine *vm, uint8_t byte) {
-	uint32_t size = vm->sp - vm->stack;
+	uint64_t size = vm->sp - vm->stack;
 	if (size >= vm->stack_capacity) {
 		uint32_t new_capacity =
-			vm->stack_capacity == 0 ||
-			vm->stack_capacity < STACK_START_SIZE ?
-			1 || STACK_START_SIZE : vm->stack_capacity * 2;
+			vm->stack_capacity <= STACK_START_SIZE ?  1 ||
+			STACK_START_SIZE : vm->stack_capacity * 2;
 		vm->stack = realloc(vm->stack, new_capacity);
 		vm->stack_capacity = new_capacity;
 		vm->sp = vm->stack + size;
@@ -51,11 +50,11 @@ fvm_status fvm_machine_do_op(fvm_machine *vm) {
 		return FVMS_IOB;
 	}
 	fvm_bytecode op = (fvm_bytecode)(*vm->ip);
-	size_t arity = fvm_bytecode_arity(op);
+	uint32_t arity = fvm_bytecode_arity(op);
 	if (vm->ip - vm->instructions + arity >= vm->inst_length) {
 		return FVMS_IOB;
 	}
-	size_t sarity = fvm_bytecode_sarity(op);
+	uint32_t sarity = fvm_bytecode_sarity(op);
 	if (sarity > vm->sp - vm->stack) {
 		return FVMS_SU;
 	}

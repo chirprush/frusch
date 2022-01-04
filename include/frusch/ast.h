@@ -1,5 +1,4 @@
-#ifndef FRUSCH_AST_H
-#define FRUSCH_AST_H
+#pragma once
 
 #include <stdint.h>
 
@@ -31,8 +30,8 @@ void frusch_node_bin_expr_free(frusch_node_bin_expr *expr);
 
 typedef struct frusch_node_list {
 	struct frusch_node *nodes;
-	size_t length;
-	size_t capacity;
+	uint32_t length;
+	uint32_t capacity;
 } frusch_node_list;
 
 frusch_node_list *frusch_node_list_new();
@@ -49,7 +48,7 @@ void frusch_node_call_expr_free(frusch_node_call_expr *call);
 typedef struct frusch_node {
 	frusch_node_type type;
 	union {
-		// NOTE: All strings stored in frusch_node should be owned, allocated strings
+		// NOTE: All pointers stored in frusch_node should be owned, allocated strings
 		char *as_err;
 		uint32_t as_int;
 		char *as_var;
@@ -64,5 +63,3 @@ frusch_node *frusch_node_var(char *value);
 frusch_node *frusch_node_binexpr(frusch_node_bin_expr *value);
 frusch_node *frusch_node_call(frusch_node_call_expr *value);
 void frusch_node_free(frusch_node *node);
-
-#endif // FRUSCH_AST_H

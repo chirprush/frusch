@@ -1,5 +1,4 @@
-#ifndef FVM_MACHINE_H
-#define FVM_MACHINE_H
+#pragma once
 
 #include <stdint.h>
 
@@ -25,5 +24,3 @@ uint8_t fvm_machine_pop(fvm_machine *vm);
 
 fvm_status fvm_machine_do_op(fvm_machine *vm);
 fvm_status fvm_machine_execute(fvm_machine *vm);
-
-#endif // FVM_MACHINE_H

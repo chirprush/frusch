@@ -1,6 +1,6 @@
 CC := gcc
 
-CFLAGS  := -Werror -Wall -Wswitch-enum -fshort-enums -g
+CFLAGS  := -Werror -Wall -Wswitch-enum -Wextra -fshort-enums -g
 LDFLAGS := -Iinclude
 
 frusch_source  := $(wildcard lib/frusch/*.c)

@@ -1,5 +1,4 @@
-#ifndef FRUSCH_PARSER_H
-#define FRUSCH_PARSER_H
+#pragma once
 
 #include <stdint.h>
 #include <frusch/ast.h>
@@ -16,6 +15,3 @@ frusch_parser *frusch_parser_free(frusch_parser *parser);
 
 frusch_node *frusch_parser_parse_atom(frusch_parser *parser);
 frusch_node *frusch_parser_parse_(frusch_parser *parser);
-
-#endif // FRUSCH_PARSER_H
-
