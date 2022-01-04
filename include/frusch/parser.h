@@ -2,7 +2,7 @@
 #define FRUSCH_PARSER_H
 
 #include <stdint.h>
-#include "frusch_ast.h"
+#include <frusch/ast.h>
 
 typedef struct frusch_parser {
 	const char *source;

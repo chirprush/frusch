@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "frusch_ast.h"
+#include <frusch/ast.h>
 
 frusch_node_bin_expr *frusch_node_bin_expr_new(frusch_node *left, frusch_node *right, frusch_node_op op) {
 	frusch_node_bin_expr *expr = malloc(sizeof(frusch_node_bin_expr));

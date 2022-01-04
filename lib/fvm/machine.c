@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "fvm_machine.h"
-#include "fvm_bytecode.h"
-#include "fvm_status.h"
+#include <fvm/machine.h>
+#include <fvm/bytecode.h>
+#include <fvm/status.h>
 
 #define STACK_START_SIZE 0
 

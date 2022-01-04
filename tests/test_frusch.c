@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <frusch/frusch_ast.h>
+#include <frusch/ast.h>
 
 #include "test_util.h"
 

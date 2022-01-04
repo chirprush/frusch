@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "fvm_bytecode.h"
+#include <fvm/bytecode.h>
 
 size_t fvm_bytecode_arity(fvm_bytecode op) {
 	switch (op) {

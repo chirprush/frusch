@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#include "fvm_bytecode.h"
-#include "fvm_status.h"
+#include <fvm/bytecode.h>
+#include <fvm/status.h>
 
 typedef struct fvm_machine {
 	uint8_t *stack;

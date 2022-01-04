@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <fvm/fvm_status.h>
-#include <fvm/fvm_machine.h>
+#include <fvm/status.h>
+#include <fvm/machine.h>
 
 #include "test_util.h"
 
