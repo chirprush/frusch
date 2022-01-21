@@ -6,7 +6,7 @@
 
 #include "test_util.h"
 
-test_result test_iob() {
+test_result test_instruction_out_of_bounds() {
 	const uint8_t instructions[] = {
 		FVMI_PUSH8,
 	};
@@ -17,7 +17,7 @@ test_result test_iob() {
 	return result;
 }
 
-test_result test_su() {
+test_result test_stack_underflow() {
 	const uint8_t instructions[] = {
 		FVMI_PUSH8, 3,
 		FVMI_ADD8,
@@ -30,7 +30,7 @@ test_result test_su() {
 	return result;
 }
 
-test_result test_op() {
+test_result test_all_ops() {
 	const uint8_t instructions[] = {
 		FVMI_PUSH8, 3,
 		FVMI_PUSH8, 5,
@@ -48,17 +48,19 @@ test_result test_op() {
 		FVMI_HALT,
 	};
 	fvm_machine *vm = fvm_machine_new(instructions, sizeof(instructions) / sizeof(instructions[0]));
-	fvm_machine_execute(vm);
-	test_result result = tassert_eq(*(vm->sp - 1), 1);
+	fvm_status status = fvm_machine_execute(vm);
+	test_result result = tassert(status == FVMS_OK && *vm->sp);
 	fvm_machine_free(vm);
 	return result;
 }
 
 int main(int argc, char *argv[]) {
+	(void)argc;
+	(void)argv;
 	struct test_entry entries[] = {
-		test_entry(test_iob),
-		test_entry(test_su),
-		test_entry(test_op)
+		test_entry(test_instruction_out_of_bounds),
+		test_entry(test_stack_underflow),
+		test_entry(test_all_ops)
 	};
 	size_t length = sizeof(entries) / sizeof(entries[0]);
 	test_context context = {0};

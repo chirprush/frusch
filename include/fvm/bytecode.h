@@ -16,4 +16,4 @@ typedef enum fvm_bytecode {
 } fvm_bytecode;
 
 uint32_t fvm_bytecode_arity(fvm_bytecode op);
-uint32_t fvm_bytecode_sarity(fvm_bytecode op);
+uint32_t fvm_bytecode_stack_arity(fvm_bytecode op);

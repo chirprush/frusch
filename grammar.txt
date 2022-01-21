@@ -13,7 +13,7 @@ e_level0 ::= e_level1 ("=" e_level1)*
 
 // Type syntax (t_)
 
-t_generic ::= "[" (IDENT ",") IDENT "]"
+t_generic ::= "< (IDENT ",") IDENT ">"
 
 t_typename ::= IDENT t_generic?
 

@@ -82,8 +82,8 @@ struct test_entry {
 typedef struct test_context {
 	struct test_entry *entries;
 	size_t length;
-	bool passed;
-	bool failed;
+	uint32_t passed;
+	uint32_t failed;
 } test_context;
 
 void test_context_start(test_context *context) {

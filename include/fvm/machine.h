@@ -1,19 +1,21 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include <fvm/bytecode.h>
 #include <fvm/status.h>
 
 typedef struct fvm_machine {
 	uint8_t *stack;
-	uint32_t stack_length;
-	uint32_t stack_capacity;
 	uint8_t *sp;
+	uint32_t stack_capacity;
+
 	const uint8_t *instructions;
-	uint32_t inst_length;
 	const uint8_t *ip;
-	uint8_t halt;
+	uint32_t inst_length;
+
+	bool halt;
 } fvm_machine;
 
 fvm_machine *fvm_machine_new(const uint8_t *instructions, uint32_t inst_length);

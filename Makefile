@@ -27,7 +27,7 @@ bin/fvm: bin/libfvm.a
 	$(CC) -o bin/fvm src/fvm_main.c -Lbin -lfvm $(CFLAGS) $(LDFLAGS)
 
 bin/test_fvm: bin/libfvm.a
-	$(CC) -o bin/test_fvm tests/test_fvm.c -Lbin  -lfvm $(CFLAGS) $(LDFLAGS)
+	$(CC) -o bin/test_fvm tests/test_fvm.c -Lbin -lfvm $(CFLAGS) $(LDFLAGS)
 
 bin/libfvm.a: $(fvm_objects)
 	ar rcs bin/libfvm.a $(fvm_objects)

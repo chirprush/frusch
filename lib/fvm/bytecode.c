@@ -20,7 +20,7 @@ uint32_t fvm_bytecode_arity(fvm_bytecode op) {
 	}
 }
 
-uint32_t fvm_bytecode_sarity(fvm_bytecode op) {
+uint32_t fvm_bytecode_stack_arity(fvm_bytecode op) {
 	switch (op) {
 	case FVMI_NOP: return 0;
 	case FVMI_PUSH8: return 0;
